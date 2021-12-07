@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,14 +19,31 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $data['title'] = 'Data User';
+        
         $data['q'] = $request->q;
-        $data['rows'] = User::where('name', 'like', '%' . $request->q . '%')->get();
-        return view('user.index', $data);
+
+        if (Auth::user()->level=='Admin') {
+            $data['title'] = 'User Data';
+            $data['rows'] = User::where('id_school', '=', Auth::user()->id_school)->get();
+            return view('user.index', $data);
+        }
+        elseif (Auth::user()->level=='Student') {
+            $data['title'] = 'Student Data';
+            $data['rows'] = User::where('id_school', '=', Auth::user()->id_school)
+                        ->where('level', '=', 'Student')
+                        ->get();
+            return view('user.index-student', $data);
+        }
+        elseif (Auth::user()->level=='Teacher') {
+            $data['title'] = 'Teacher & Student Data';
+            $data['rows'] = User::where('id_school', '=', Auth::user()->id_school)
+                        ->where('level', '=', 'Teacher')
+                        ->get();
+            return view('user.index-teacher', $data);
+        }
     }
 
-
-    /**
+        /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -81,7 +102,7 @@ class UserController extends Controller
     {
         $data['title'] = 'Edit User';
         $data['row'] = $user;
-        $data['levels'] = ['Student' => 'Student', 'Teacher' => 'Teacher'];
+        $data['levels'] = ['Student' => 'Student','Admin' => 'Admin', 'Teacher' => 'Teacher'];
         return view('user.edit', $data);
     }
 
@@ -111,7 +132,7 @@ class UserController extends Controller
             $user->password = Hash::make($request->password);
 
         $user->save();
-        return redirect('user')->with('success', 'Edit data success!');
+        return redirect('user')->with('success', 'Edit data success');
     }
 
     /**
@@ -123,6 +144,6 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect('user')->with('success', 'Delete data success!');
+        return redirect('user')->with('success', 'Delete data success');
     }
 }

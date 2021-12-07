@@ -72,7 +72,7 @@
                 </div>
                 <div class="form-group">
                   <label for="name">School</label>
-                  <input type="text" name="id_school" class="form-control" value="1"
+                  <input type="text" name="id_school" class="form-control" value="{{Auth::user()->id_school}}"
                     placeholder="Enter School">
                 </div>
                 <div class="form-group">
@@ -83,6 +83,7 @@
                 <div class="form-group">
                   <label for="role">Role</label>
                   <select name="level" class="form-control">
+                    <option value="Admin">Admin</option>
                     <option value="Student">Student</option>
                     <option value="Teacher">Teacher</option>
                   </select>
