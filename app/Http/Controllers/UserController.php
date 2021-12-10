@@ -6,7 +6,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-
+use DB; 
+use Carbon\Carbon; 
+use Mail; 
+use Illuminate\Support\Str;
 class UserController extends Controller
 {
     public function __construct() {
@@ -19,7 +22,6 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        
         $data['q'] = $request->q;
 
         if (Auth::user()->level=='Admin') {
@@ -43,7 +45,29 @@ class UserController extends Controller
         }
     }
 
-        /**
+    public function submitForgetPassword($email,$username,$school)
+    {
+        // $request->validate([
+        //     'email' => 'required|email|exists:tb_user',
+        // ]);
+        // dd($email);
+
+        $token = Str::random(64);
+
+        DB::table('password_resets')->insert([
+            'email' => $email, 
+            'token' => $token, 
+            'created_at' => Carbon::now()
+        ]);
+
+        Mail::send('reset-email', ['token' => $token,'username' => $username,'email' => $email,'school' => $school], function($message) use($email){
+            $message->to($email);
+            $message->subject('Login Information');
+        });
+
+        return back()->with('message', 'We have e-mailed your password reset link!');
+    }
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

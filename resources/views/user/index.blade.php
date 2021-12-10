@@ -30,6 +30,7 @@
                 <td>{{ $row->email }}</td>
                 <td>{{ $row->level }}</td>
                 <td>
+                    <a class="btn btn-sm btn-success" href="{{ route('send.reset.get', [$row->email,$row->username,$row->id_school]) }}">Send Mail</a>
                     <a class="btn btn-sm btn-warning" href="{{ route('user.edit', $row) }}">Edit</a>
                     <form method="POST" action="{{ route('user.destroy', $row) }}" style="display: inline-block;">
                         @csrf
