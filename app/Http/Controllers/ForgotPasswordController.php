@@ -9,7 +9,7 @@ use App\Models\User;
 use Mail; 
 use Hash;
 use Illuminate\Support\Str;
-  
+use Illuminate\Support\Facades\Session;
 class ForgotPasswordController extends Controller
 {
       /**

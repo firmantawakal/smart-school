@@ -30,6 +30,7 @@
                 <td>{{ $row->email }}</td>
                 <td>{{ $row->level }}</td>
                 <td>
+                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-message{{ $no }}">Send Message</button>
                     <a class="btn btn-sm btn-success" href="{{ route('send.reset.get', [$row->email,$row->username,$row->id_school]) }}">Send Mail</a>
                     <a class="btn btn-sm btn-warning" href="{{ route('user.edit', $row) }}">Edit</a>
                     <form method="POST" action="{{ route('user.destroy', $row) }}" style="display: inline-block;">
@@ -39,6 +40,43 @@
                     </form>
                 </td>
             </tr>
+            {{-- MESSAGE MODAL --}}
+            <div class="modal fade" id="modal-message{{ $no }}">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">SEND MESSAGE</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="{{ route('send-message') }}" method="post">
+                      @csrf
+                      <div class="form-group">
+                        <label for="username">To</label>
+                        <input type="text" class="form-control" id="username" placeholder="Enter Username" value="{{ $row->name }}" readonly>
+                        <input type="hidden" name="username" class="form-control" value="{{ $row->username }}"/>
+
+                      </div>
+                      
+                      <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea name="message" class="form-control" id="message"
+                          placeholder="Enter Message"></textarea>
+                      </div>
+                      
+                      <br>
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
+              <!-- /.modal -->
+            </div>
             @endforeach
         </tbody>
       </table>

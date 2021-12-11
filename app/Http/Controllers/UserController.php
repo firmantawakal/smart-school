@@ -41,6 +41,9 @@ class UserController extends Controller
             $data['rows'] = User::where('id_school', '=', Auth::user()->id_school)
                         ->where('level', '=', 'Teacher')
                         ->get();
+            $data['student'] = User::where('id_school', '=', Auth::user()->id_school)
+                        ->where('level', '=', 'Student')
+                        ->get();
             return view('user.index-teacher', $data);
         }
     }
@@ -158,6 +161,25 @@ class UserController extends Controller
         $user->save();
         return redirect('user')->with('success', 'Edit data success');
     }
+
+    public function send_message(Request $request, User $user)
+    {
+        // $request->validate([
+        //     'username' => 'required',
+        //     'id_school' => 'required',
+        //     'name' => 'required',
+        //     'email' => 'required',
+        //     'level' => 'required',
+        // ]);
+        
+        $request->username;
+        $request->message;
+
+        event(new \App\Events\StatusLiked(Auth::user()->username,$request->username,$request->message));
+
+        return redirect('user')->with('success', 'Send message success');
+    }
+
 
     /**
      * Remove the specified resource from storage.

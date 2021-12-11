@@ -11,4 +11,9 @@ class HomeController extends Controller
         $data['title'] = 'Home';
         return view('home',$data);
     }
+    public function notif()
+    {
+        // $data['title'] = 'Home';
+        return view('notif');
+    }
 }

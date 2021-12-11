@@ -30,8 +30,8 @@
         </div>
         <div class="form-group">
           <label for="name">School</label>
-          <input type="text" name="id_school" class="form-control" value="1"
-            placeholder="Enter School">
+          <input type="text" name="id_school" class="form-control" value="{{ $row->id_school }}"
+            placeholder="Enter School" readonly>
         </div>
         <div class="form-group">
           <label for="email">Email</label>

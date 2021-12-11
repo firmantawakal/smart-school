@@ -9,10 +9,10 @@
 @endforeach
 @endif
 <div class="card card-primary card-outline">
-    <div class="card-body">
-      <h4>Selamat Datang 
+    <div class="card-body"> 
+      <h4>Welcome 
         <b>{{Auth::user()->name}}</b>
-        , Anda Login sebagai <b>
+        , You login as <b>
           {{Auth::user()->level}}</b>.
       </h4>
     </div>

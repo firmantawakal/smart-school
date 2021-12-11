@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ForgotPasswordController;
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,3 +36,10 @@ Route::get('send-reset/{email}/{username}/{school}', [UserController::class, 'su
 // Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post'); 
 Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
+
+Route::post('send-message', [UserController::class, 'send_message'])->name('send-message');
+// Route::get('test', function () {
+//     event(new App\Events\StatusLiked(Auth::user()->username,'student1'));
+//     return "Event has been sent!";
+// });
+Route::get('notif', [HomeController::class, 'notif'])->name('notif');
